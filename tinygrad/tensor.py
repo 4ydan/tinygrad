@@ -86,7 +86,7 @@ class Tensor:
       print("Creating Tensor from numpy array: ", data.shape,  data.dtype, device, data)
       data = cast(np.ndarray, data)
       data = LazyBuffer.fromCPU(data)
-      print("DATA: DATADEV: ", data)
+      print("DATA: ", data)
       print("DATADEV: ", data.device)
       self.lazydata = data if data.device == device else LazyBuffer.loadop(LoadOps.FROM, data.shape, data.dtype, device, src=data)
       return
