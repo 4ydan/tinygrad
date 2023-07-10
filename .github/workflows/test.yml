@@ -163,7 +163,7 @@ jobs:
           ${{ github.workspace }}/.pytest_cache
           ${{ github.workspace }}/.mypy_cache
           ${{ github.workspace }}/test/models/efficientnet
-          ~/.cache/torch/hub
+          ${TORCH_HOME}
         key: testclang-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
