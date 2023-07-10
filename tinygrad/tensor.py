@@ -68,6 +68,7 @@ class Tensor:
       print("DATADEVICE: ", data.device)
       print("DATADEVBOOL: ", data.device == device)
       self.lazydata = data if data.device == device else LazyBuffer.loadop(LoadOps.FROM, data.shape, data.dtype, device, src=data)
+      print("LAZYDATA: ", self.lazydata)
       return
 
     if isinstance(data, (int, float)):
