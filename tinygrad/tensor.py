@@ -60,7 +60,9 @@ class Tensor:
     self._ctx: Optional[Function] = None
     if data.__class__ is LazyBuffer:
       print("Creating Tensor from LazyBuffer")
+      print("DATA BEFORE CAST: ", data)
       data = cast(LazyBuffer, data) # NOTE: this is a noop, it makes mypy happy
+      print("DATA AFTER CAST: ", data)
       assert dtype is None or dtype == data.dtype, "dtype doesn't match, and casting isn't supported"
       print("DEVICE: ", device)
       print("DATADEVICE: ", data.device)
