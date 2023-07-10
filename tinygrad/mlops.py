@@ -13,9 +13,11 @@ class Cast(Function):
   __slots__ = "input_dtype"
   def forward(self, x, dtype):
     self.input_dtype = x.dtype
-    print("XTYPE: x", x)
+    print("XTYPE BEFORE CAST: x.dtype", x.dtype)
+    ret = x.cast(dtype)
+    print("XTYPE AFTER CAST: ret.dtype", ret.dtype)
     print("END")
-    return x.cast(dtype)
+    return ret
   def backward(self, grad_output):
     return grad_output.cast(self.input_dtype)
 

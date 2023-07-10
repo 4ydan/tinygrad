@@ -29,7 +29,7 @@ class Function:
     ctx = fxn(x[0].device, *x)
     print("Apply: (ctx)", ctx)
     for t in x:
-      print(t.lazydata)
+      print("DATA: " + str(t.lazydata))
     ret = Tensor(ctx.forward(*[t.lazydata for t in x], **kwargs), device=ctx.device, requires_grad=ctx.requires_grad)
     print("Apply: ret: " + str(ret))
     if ctx.requires_grad and not Tensor.no_grad: ret._ctx = ctx    # used by autograd engine
@@ -59,19 +59,23 @@ class Tensor:
     # internal variables used for autograd graph construction
     self._ctx: Optional[Function] = None
     if data.__class__ is LazyBuffer:
+      print("Creating Tensor from LazyBuffer")
       data = cast(LazyBuffer, data) # NOTE: this is a noop, it makes mypy happy
       assert dtype is None or dtype == data.dtype, "dtype doesn't match, and casting isn't supported"
       self.lazydata = data if data.device == device else LazyBuffer.loadop(LoadOps.FROM, data.shape, data.dtype, device, src=data)
       return
 
     if isinstance(data, (int, float)):
+      print("Creating Tensor from scalar")
       self.lazydata = LazyBuffer.loadop(LoadOps.CONST, tuple(), dtype or Tensor.default_type, device, data)
       return
 
     if data.__class__ is list:
+      print("Creating Tensor from list")
       data = np.array(data, dtype=(dtype or Tensor.default_type).np)
 
     if data.__class__ is np.ndarray:
+      print("Creating Tensor from numpy array")
       data = cast(np.ndarray, data)
       data = LazyBuffer.fromCPU(data)
       self.lazydata = data if data.device == device else LazyBuffer.loadop(LoadOps.FROM, data.shape, data.dtype, device, src=data)
