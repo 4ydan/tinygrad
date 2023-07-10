@@ -77,6 +77,8 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
+        cache: pip
+        cache-dependency-path: setup.py
         python-version: 3.8
     - name: Install Dependencies
       run: pip install -e .
@@ -98,6 +100,8 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
+        cache: pip
+        cache-dependency-path: setup.py
         python-version: 3.8
     - name: Check for cache
       uses: actions/cache@v3
@@ -108,7 +112,7 @@ jobs:
           ${{ github.workspace }}/.pytest_cache
           ${{ github.workspace }}/.mypy_cache
           ${{ github.workspace }}/test/models/efficientnet
-          ~/.cache/torch/hub
+          ${TORCH_HOME}
         key: testllvm-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[llvm,testing]' --extra-index-url https://download.pytorch.org/whl/cpu
@@ -134,14 +138,9 @@ jobs:
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: |
-          ${{ env.pythonLocation }}
-          ${{ env.LD_LIBRARY_PATH }}
-          ${{ github.workspace }}/.pytest_cache
-          ${{ github.workspace }}/.mypy_cache
-          ${{ github.workspace }}/test/models/efficientnet
+        path: 
           ${TORCH_HOME}
-        key: testclang-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Set env
@@ -160,20 +159,17 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
+        cache: pip
+        cache-dependency-path: setup.py
         python-version: 3.8
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: |
-          ${{ env.pythonLocation }}
-          ${{ env.LD_LIBRARY_PATH }}
-          ${{ github.workspace }}/.pytest_cache
-          ${{ github.workspace }}/.mypy_cache
-          ${{ github.workspace }}/test/models/efficientnet
-          ~/.cache/torch/hub
-        key: testtorch-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        path: 
+          ${TORCH_HOME}
+        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
-      run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
+      run: pip install '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Run Pytest
       run: TORCH=1 python -m pytest -s -v -n=auto test/
     - name: Run ONNX
@@ -198,18 +194,15 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
+        cache: pip
+        cache-dependency-path: setup.py
         python-version: 3.8
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: |
-          ${{ env.pythonLocation }}
-          ${{ env.LD_LIBRARY_PATH }}
-          ${{ github.workspace }}/.pytest_cache
-          ${{ github.workspace }}/.mypy_cache
-          ${{ github.workspace }}/test/models/efficientnet
-          ~/.cache/torch/hub
-        key: testgpu-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        path: 
+          ${TORCH_HOME}
+        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Run Optimizer Test (OPT 2 and 3)
@@ -238,18 +231,15 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
+        cache: pip
+        cache-dependency-path: setup.py
         python-version: 3.8
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: |
-          ${{ env.pythonLocation }}
-          ${{ env.LD_LIBRARY_PATH }}
-          ${{ github.workspace }}/.pytest_cache
-          ${{ github.workspace }}/.mypy_cache
-          ${{ github.workspace }}/test/models/efficientnet
-          ~/.cache/torch/hub
-        key: testopencl-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        path: 
+          ${TORCH_HOME}
+        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Test openpilot model compile and size
@@ -276,18 +266,15 @@ jobs:
     - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
+        cache: pip
+        cache-dependency-path: setup.py
         python-version: 3.11
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: |
-          ${{ env.pythonLocation }}
-          ${{ env.LD_LIBRARY_PATH }}
-          ${{ github.workspace }}/.pytest_cache
-          ${{ github.workspace }}/.mypy_cache
-          ${{ github.workspace }}/test/models/efficientnet
-          ~/.cache/torch/hub
-        key: testmetal-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        path: 
+          ${TORCH_HOME}
+        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[metal,testing]'
     - name: Test LLaMA compile speed
