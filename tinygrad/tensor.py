@@ -62,13 +62,8 @@ class Tensor:
     self._ctx: Optional[Function] = None
     if data.__class__ is LazyBuffer:
       print("Creating Tensor from LazyBuffer")
-      print("DATA BEFORE CAST: ", data)
       data = cast(LazyBuffer, data) # NOTE: this is a noop, it makes mypy happy
-      print("DATA AFTER CAST: ", data)
       assert dtype is None or dtype == data.dtype, "dtype doesn't match, and casting isn't supported"
-      print("DEVICE: ", device)
-      print("DATADEVICE: ", data.device)
-      print("DATADEVBOOL: ", data.device == device)
       self.lazydata = data if data.device == device else LazyBuffer.loadop(LoadOps.FROM, data.shape, data.dtype, device, src=data)
       print("LAZYDATA: ", self.lazydata)
       return
@@ -86,8 +81,6 @@ class Tensor:
       print("Creating Tensor from numpy array: ", data.shape,  data.dtype, device, data)
       data = cast(np.ndarray, data)
       data = LazyBuffer.fromCPU(data)
-      print("DATA: ", device)
-      print("DATADEV: ", data.device)
       self.lazydata = data if data.device == device else LazyBuffer.loadop(LoadOps.FROM, data.shape, data.dtype, device, src=data)
       print("LAZYDATA: ", self.lazydata)
       return

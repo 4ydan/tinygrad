@@ -15,10 +15,7 @@ def _test_to_np(a:Tensor, np_dtype, target: List[int]):
 
 def _test_op(fxn, target_dtype:DType, target: List[int]):
   c = fxn()
-  if DEBUG >= 2:
-    print("Computed Output (c):", c)
-    print("Computed Output Data Type (c.dtype):", c.dtype)
-    print(c.numpy())
+  if DEBUG >= 2: print(c.numpy())
   assert c.dtype == target_dtype
   np.testing.assert_allclose(c.numpy(), target)
 
