@@ -20,6 +20,12 @@ jobs:
         cache: pip
         cache-dependency-path: setup.py
         python-version: 3.8
+    - name: Check for cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ github.workspace }}/.mypy_cache
+        key: linter-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install dependencies
       run: pip install -e '.[linting,testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Repo line count
