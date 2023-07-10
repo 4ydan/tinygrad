@@ -24,6 +24,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
           ${{ github.workspace }}/.mypy_cache
         key: linter-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install dependencies
@@ -57,6 +59,13 @@ jobs:
         cache: pip
         cache-dependency-path: setup.py
         python-version: 3.8
+    - name: Check for cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
+        key: testcpu-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Test Docs
@@ -80,6 +89,13 @@ jobs:
         cache: pip
         cache-dependency-path: setup.py
         python-version: 3.8
+    - name: Check for cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
+        key: testimagenet-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e .
     - name: Compile EfficientNet to C
@@ -110,8 +126,6 @@ jobs:
           ${{ env.pythonLocation }}
           ${{ env.LD_LIBRARY_PATH }}
           ${{ github.workspace }}/.pytest_cache
-          ${{ github.workspace }}/.mypy_cache
-          ${{ github.workspace }}/test/models/efficientnet
           ${TORCH_HOME}
         key: testllvm-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
@@ -138,9 +152,11 @@ jobs:
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: 
+        path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
           ${TORCH_HOME}
-        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        key: testclang-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Set env
@@ -165,9 +181,11 @@ jobs:
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: 
+        path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
           ${TORCH_HOME}
-        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        key: testtorch-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Run Pytest
@@ -200,9 +218,11 @@ jobs:
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: 
+        path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
           ${TORCH_HOME}
-        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        key: testgpu-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Run Optimizer Test (OPT 2 and 3)
@@ -237,9 +257,11 @@ jobs:
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: 
+        path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
           ${TORCH_HOME}
-        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        key: testopencl-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Test openpilot model compile and size
@@ -272,9 +294,11 @@ jobs:
     - name: Check for cache
       uses: actions/cache@v3
       with:
-        path: 
+        path: |
+          ${{ env.pythonLocation }}
+          ${{ env.LD_LIBRARY_PATH }}
           ${TORCH_HOME}
-        key: torch-home-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        key: testmetal-${{ runner.os }}-${{ hashFiles('setup.py') }}
     - name: Install Dependencies
       run: pip install -e '.[metal,testing]'
     - name: Test LLaMA compile speed
