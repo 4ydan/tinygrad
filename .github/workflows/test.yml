@@ -54,6 +54,8 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
+        cache: pip
+        cache-dependency-path: setup.py
         python-version: 3.8
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
