@@ -16,7 +16,6 @@ class Cast(Function):
     print("XTYPE BEFORE CAST: x.dtype", x.dtype)
     ret = x.cast(dtype)
     print("XTYPE AFTER CAST: ret.dtype", ret.dtype)
-    print("END")
     return ret
   def backward(self, grad_output):
     return grad_output.cast(self.input_dtype)
