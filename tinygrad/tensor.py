@@ -29,8 +29,10 @@ class Function:
     ctx = fxn(x[0].device, *x)
     print("Apply: (ctx)", ctx)
     for t in x:
-      print("DATA: " + str(t.lazydata))
+      print("DATA BEFORE FORWARD: " + str(t.lazydata))
     ret = Tensor(ctx.forward(*[t.lazydata for t in x], **kwargs), device=ctx.device, requires_grad=ctx.requires_grad)
+    for t in x:
+      print("DATA AFTER FORWARD: " + str(t.lazydata))
     print("Apply: ret: " + str(ret))
     if ctx.requires_grad and not Tensor.no_grad: ret._ctx = ctx    # used by autograd engine
     return ret
