@@ -15,9 +15,12 @@ def _test_to_np(a:Tensor, np_dtype, target: List[int]):
 
 def _test_op(fxn, target_dtype:DType, target: List[int]):
   c = fxn()
-  if DEBUG >= 2: print(c.numpy())
+  if DEBUG >= 2:
+    print("Computed Output (c):", c)
+    print("Computed Output Data Type (c.dtype):", c.dtype)
+    print(c.numpy())
   assert c.dtype == target_dtype
-  np.testing.assert_allclose(c.numpy(), target: List[int])
+  np.testing.assert_allclose(c.numpy(), target)
 
 def _test_cast(a:Tensor, target_dtype:DType, target: List[int]): _test_op(lambda: a.cast(target_dtype), target_dtype, target)
 def _test_add(a:Tensor, b:Tensor, target_dtype:DType, target: List[int]): _test_op(lambda: a+b, target_dtype, target)
