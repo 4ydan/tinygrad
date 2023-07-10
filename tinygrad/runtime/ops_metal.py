@@ -29,7 +29,8 @@ class RawMetalBuffer(RawBufferMapped):
   def _buffer(self):
     METAL.synchronize()
     buffer_contents = self._buf.contents().as_buffer(self._buf.length())
-    print("Buffer contents:", buffer_contents)
+    import numpy as np
+    print("Buffer contents:", np.frombuffer(buffer_contents, dtype=np.uint8))
     return buffer_contents
 
 def unwrap(x):
@@ -68,7 +69,8 @@ class MetalProgram:
     for i,a in enumerate(bufs): encoder.setBuffer_offset_atIndex_(a._buf, 0, i)
     encoder.dispatchThreadgroups_threadsPerThreadgroup_(Metal.MTLSize(*global_size), Metal.MTLSize(*local_size))
     encoder.endEncoding()
-    print("Buffer contents before execution:", [buf._buffer() for buf in bufs])
+    import numpy as np
+    print("Buffer contents before execution:", np.frombuffer([buf._buffer() for buf in bufs], dtype=np.uint8))
     command_buffer.commit()
     if wait:
       command_buffer.waitUntilCompleted()
