@@ -372,6 +372,8 @@ jobs:
           ${{ github.workspace }}/test/models/efficientnet
           ~/.cache/torch/hub
         key: testcuda-${{ runner.os }}-${{ hashFiles('setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
     - name: Install tinygrad dependencies
       run: pip install --upgrade-strategy eager -e '.[testing, cuda]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Run pytest
