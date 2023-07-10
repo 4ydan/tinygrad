@@ -64,6 +64,7 @@ class Tensor:
       assert dtype is None or dtype == data.dtype, "dtype doesn't match, and casting isn't supported"
       print("DEVICE: ", device)
       print("DATADEVICE: ", data.device)
+      print("DATADEVBOOL: ", data.device == device)
       self.lazydata = data if data.device == device else LazyBuffer.loadop(LoadOps.FROM, data.shape, data.dtype, device, src=data)
       return
 
