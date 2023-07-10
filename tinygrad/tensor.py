@@ -30,7 +30,6 @@ class Function:
     print("Apply: (ctx)", ctx)
     for t in x:
       print(t.lazydata)
-    print("Apply: device: (ctx.device)", ctx.device)
     ret = Tensor(ctx.forward(*[t.lazydata for t in x], **kwargs), device=ctx.device, requires_grad=ctx.requires_grad)
     print("Apply: ret: " + str(ret))
     if ctx.requires_grad and not Tensor.no_grad: ret._ctx = ctx    # used by autograd engine
